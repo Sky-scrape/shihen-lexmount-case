@@ -114,7 +114,7 @@
   <div class="meta">
     <span><b>项目</b> 时痕（档案馆 + 追踪器）</span>
     <span><b>云端能力</b> Web Fetch <code>/v1/dom/dump</code></span>
-    <span><b>实跑日期</b> 2026-11-01</span>
+    <span><b>实跑日期</b> 2026-11-01 ～ 11-02</span>
   </div>
 </header>
 
@@ -207,6 +207,8 @@
 
 <p>按出口拆开后，云端出口与付费 API 的贡献完全持平（各 36 条），而成本是零增量（计入 Web Fetch 额度）。另有 13 次因命中「盘点稿」类页面被正确拒绝。</p>
 
+<p><strong>耗时与费用：</strong>2026-01 发现到补源全程约 11 分钟（以任务包落盘时间为准），2026-02 约 4 分 21 秒，2026-03 约 3 分钟；单次云端渲染约 1.8 秒，云端真实浏览器一次完整会话约 12.3 秒。费用全部计入本活动赠送的 Lexmount Pro 额度，未产生额外付费调用；对照通道博查按次计费，本轮 36 次。调用次数取自运行结束时的 calls 计数，命中数取自任务包 JSON（funnel.json / packages.json），均可复算。</p>
+
 <h2><span class="num">04</span>三个比数字更重要的发现</h2>
 
 <div class="finding">
@@ -228,7 +230,7 @@
   <span class="tag">踩坑记录</span>
   <h3>状态记忆会让新出口永远不被使用</h3>
   <p>首次实跑时 124 次请求<strong>全部落在付费 API，云端出口一次没用</strong>。原因不是接入错了：补源阶段会继承上一轮"已知被墙"的引擎列表——上一轮直连确实被墙，但换了出口之后这道墙已经不成立。沿用旧状态，等于让新出口永远不被选中。</p>
-  <p>这类"修复看起来生效、实际跑的还是旧路径"的问题，比接入本身更值得记下来。</p>
+  <p>这类"修复看起来生效、实际跑的还是旧路径"的问题，比接入本身更值得记下来。<strong>已修：</strong>被墙状态改为按出口分键记录，换出口时旧状态自然失效，不再需要人工清空。</p>
 </div>
 
 <h2><span class="num">05</span>未完成的部分</h2>
@@ -296,11 +298,13 @@
   <li>出口对照可用任意公开 URL 复现：同一页分别以本机直连与云端渲染各取一次，比对结果块数量与落地地址。</li>
   <li>云端调用可在 Lexmount 控制台按 <code>request_id</code> / <code>dom_id</code> 回查，对应每一次结果页渲染与正文回退。</li>
   <li>命令：<code>backfill:workflow --month 2026-01 --transport lexmount --stage supplement --resume</code>；transport 不进配置哈希，可对已跑完的月份增量续跑。</li>
+  <li>运行环境：Node.js 24，纯 ESM，无 Web 框架依赖；环境变量 <code>LEXMOUNT_API_KEY</code>、<code>LEXMOUNT_PROJECT_ID</code>、<code>LEXMOUNT_BASE_URL</code>（中国区 https://api.lexmount.cn ），值不入库、不写进任何报告。复现三步：仓库根 <code>npm install</code> → 填上述三个变量 → 运行 <code>npm run backfill:workflow -- --month 2026-01 --transport lexmount --stage discover</code>。可选依赖（博查 API、Wayback 存档）留空即自动降级。</li>
   <li>门禁结论以线上证据包为准：<code>readyForReview</code>、<code>archive_status</code>、<code>replayVerified</code> 全部由服务器侧判定，不由本材料声明。</li>
 </ul>
 
 <footer>
-  <p>本摘要基于 2026-11-01 的实跑记录，数字均为该次运行实测值。文中不含任何凭据、内部路径与未发布草稿内容；运行日志与原始任务包可按评审需要提供脱敏导出。</p>
+  <p>纯文本镜像（Gist）：<a href="https://gist.github.com/Sky-scrape/f9c62d4b2ede8b1bfdccf0fce0a138d7">gist.github.com/Sky-scrape/f9c62d4b2ede8b1bfdccf0fce0a138d7</a></p>
+  <p>本摘要基于 2026-11-01 ～ 11-02 的实跑记录，数字均为对应那次运行的实测值。文中不含任何凭据、内部路径与未发布草稿内容；运行日志与原始任务包可按评审需要提供脱敏导出。</p>
 </footer>
 
 </div>
